@@ -18,6 +18,19 @@ io.on('connection', (socket) => {
   console.log('New user is connected');
 
 
+
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Welcom to the chat app',
+    createdAt: new Date().getTime()
+  })
+
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined',
+    createdAt: new Date().getTime()
+  })
+
 // socket.emit emits an event to a single connection
   // socket.emit('newMessage', {
   //   from: 'Maria',
@@ -28,7 +41,15 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message) => {
     console.log('create message:', message);
     // io.emit() emits an event to every single connection
-    io.emit('newMessage', {
+    // io.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
+
+
+    // is gonna send a message to everybody instead of this socket
+    socket.broadcast.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
