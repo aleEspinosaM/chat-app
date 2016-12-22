@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+
+const {generateMessage} = require('./utils/message');
 // to not use server/../public
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -19,17 +21,9 @@ io.on('connection', (socket) => {
 
 
 
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcom to the chat app',
-    createdAt: new Date().getTime()
-  })
+  socket.emit('newMessage', generateMessage('Admin', 'Welcom to the chatApp'));
 
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'New user joined',
-    createdAt: new Date().getTime()
-  })
+  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined '))
 
 // socket.emit emits an event to a single connection
   // socket.emit('newMessage', {
@@ -41,19 +35,15 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message) => {
     console.log('create message:', message);
     // io.emit() emits an event to every single connection
-    // io.emit('newMessage', {
+    io.emit('newMessage', generateMessage(message.from, message.text));
+
+
+    // is gonna send a message to everybody instead of this socket
+    // socket.broadcast.emit('newMessage', {
     //   from: message.from,
     //   text: message.text,
     //   createdAt: new Date().getTime()
     // })
-
-
-    // is gonna send a message to everybody instead of this socket
-    socket.broadcast.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    })
   })
 
   socket.on('disconnect', () => {
