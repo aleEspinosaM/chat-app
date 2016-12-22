@@ -25,18 +25,11 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined '))
 
-// socket.emit emits an event to a single connection
-  // socket.emit('newMessage', {
-  //   from: 'Maria',
-  //   text: 'DUUUUUUDE',
-  //   creaAt: 123
-  // });
-
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('create message:', message);
     // io.emit() emits an event to every single connection
     io.emit('newMessage', generateMessage(message.from, message.text));
-
+    callback('from server')
 
     // is gonna send a message to everybody instead of this socket
     // socket.broadcast.emit('newMessage', {
