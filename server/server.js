@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     console.log('create message:', message);
     // io.emit() emits an event to every single connection
     io.emit('newMessage', generateMessage(message.from, message.text));
-    callback('from server')
+    callback()
 
     // is gonna send a message to everybody instead of this socket
     // socket.broadcast.emit('newMessage', {
