@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
 
 
 
-  socket.emit('newMessage', generateMessage('Admin', 'Welcom to the chatApp'));
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatApp'));
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined '))
 
